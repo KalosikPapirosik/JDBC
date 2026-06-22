@@ -5,7 +5,7 @@ import java.time.OffsetDateTime;
 public class Booking {
     private int id;
     private int guest_id;
-    private int housing_id;
+    private Integer housing_id;
     private int additional_services_id;
     private OffsetDateTime date_of_start;
     private OffsetDateTime date_of_end;
@@ -19,6 +19,24 @@ public class Booking {
         this.date_of_start = date_of_start;
         this.date_of_end = date_of_end;
         this.date_of_service = date_of_service;
+    }
+
+    public Booking(int guest_id, int housing_id, int additional_services_id, OffsetDateTime date_of_start, OffsetDateTime date_of_end, OffsetDateTime date_of_service) {
+        this.guest_id = guest_id;
+        this.housing_id = housing_id;
+        this.additional_services_id = additional_services_id;
+        this.date_of_start = date_of_start;
+        this.date_of_end = date_of_end;
+        this.date_of_service = date_of_service;
+    }
+
+    public Booking(int guest_id, int housing_id, OffsetDateTime date_of_start, OffsetDateTime date_of_end) {
+        this.guest_id = guest_id;
+        this.housing_id = housing_id;
+        this.date_of_start = date_of_start;
+        this.date_of_end = date_of_end;
+        this.additional_services_id = 1;
+        this.date_of_service = null;
     }
 
     public int getId() {

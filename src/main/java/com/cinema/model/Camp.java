@@ -9,6 +9,10 @@ public class Camp {
         this.location = location;
     }
 
+    public Camp(String location) {
+        this.location = location;
+    }
+
     public int getId() {
         return id;
     }

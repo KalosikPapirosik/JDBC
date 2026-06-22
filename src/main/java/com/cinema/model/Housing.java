@@ -27,6 +27,15 @@ public class Housing {
         setHousing_Condition(housing_condition_id);
     }
 
+    public Housing(int type_id, int camp_id, String comfort_lvl, int capacity, BigDecimal cost, int housing_condition_id) {
+        this.type_id = type_id;
+        this.camp_id = camp_id;
+        this.comfort_lvl = comfort_lvl;
+        this.capacity = capacity;
+        this.cost = cost;
+        setHousing_Condition(housing_condition_id);
+    }
+
     public void setHousing_Condition(int id){
         this.housing_condition_id = id;
     }

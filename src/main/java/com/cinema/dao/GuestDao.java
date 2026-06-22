@@ -68,6 +68,16 @@ public class GuestDao {
         }
     }
 
+    public boolean update(String document, int guest_id) throws SQLException{
+        String sql = "UPDATE guest SET document = ? where id = ?";
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setString(1, document);
+            ps.setInt(2, guest_id);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
     public boolean delete(int id) throws SQLException {
         String sql = "DELETE FROM guest WHERE id = ?";
         try (Connection conn = ConnectionManager.getConnection();

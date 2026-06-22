@@ -75,6 +75,23 @@ public class InventoryDao {
         }
     }
 
+    public int batchInsert(List<Inventory> inventories) throws SQLException {
+        String sql = "INSERT INTO inventory (camp_id, type_of_inventory, quantity) VALUES (?, ?, ?)";
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            conn.setAutoCommit(false);
+            for (Inventory s : inventories) {
+                ps.setInt(1, s.getCamp_id());
+                ps.setString(2, s.getType_of_inventory());
+                ps.setInt(3, s.getQuantity());
+                ps.addBatch();
+            }
+            int[] counts = ps.executeBatch();
+            conn.commit();
+            return counts.length;
+        }
+    }
+
     private Inventory mapRow(ResultSet rs) throws SQLException {
         return new Inventory(
                 rs.getInt("id"),

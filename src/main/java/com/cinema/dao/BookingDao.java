@@ -82,6 +82,48 @@ public class BookingDao {
         }
     }
 
+    public Optional<Booking> findByHousingAndGuestId(int housingId, int guestId){
+        String sql = "SELECT id, guest_id, housing_id, additional_services_id, date_of_start, date_of_end, date_of_service from booking WHERE guest_id = ? AND housing_id = ?";
+        try (Connection conn = ConnectionManager.getConnection();
+                PreparedStatement preparedStatement = conn.prepareStatement(sql)){
+            preparedStatement.setInt(1, guestId);
+            preparedStatement.setInt(2, housingId);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                return rs.next() ? Optional.of(mapRow(rs)) : Optional.empty();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int bookingByHousingAndGuestId(int housingId, int guestId){
+
+        if (!findByHousingAndGuestId(housingId, guestId).isEmpty()) throw new RuntimeException("Booking is already exists");
+
+        Booking booking = new Booking(guestId, housingId, OffsetDateTime.now(), OffsetDateTime.now());
+
+        String sql = "INSERT INTO booking (guest_id, housing_id, date_of_start, date_of_end) VALUES (?, ?, ?, ?)";
+        try (Connection conn = ConnectionManager.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            ps.setInt(1, booking.getGuest_id());
+            ps.setInt(2, booking.getHousing_id());
+            ps.setObject(3, booking.getDate_of_start());
+            ps.setObject(4, booking.getDate_of_end());
+            ps.executeUpdate();
+            try (ResultSet keys = ps.getGeneratedKeys()) {
+                if (keys.next()) {
+                    int id = keys.getInt(1);
+                    booking.setId(id);
+                    return id;
+                }
+            }
+            throw new SQLException("Не удалось получить сгенерированный ключ");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     private Booking mapRow(ResultSet rs) throws SQLException {
         return new Booking(
                 rs.getInt("id"),

@@ -13,6 +13,12 @@ public class Inventory {
         this.quantity = quantity;
     }
 
+    public Inventory(int camp_id, String type_of_inventory, int quantity) {
+        this.camp_id = camp_id;
+        this.type_of_inventory = type_of_inventory;
+        this.quantity = quantity;
+    }
+
     public int getId() {
         return id;
     }

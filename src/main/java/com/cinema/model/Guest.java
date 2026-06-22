@@ -22,6 +22,13 @@ public class Guest {
         this.firstname = firstname;
     }
 
+    public Guest(String document, String lastname, String firstname, String patronymic) {
+        this.document = document;
+        this.lastname = lastname;
+        this.firstname = firstname;
+        this.patronymic = patronymic;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
